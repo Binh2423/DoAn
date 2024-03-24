@@ -1,3 +1,6 @@
+using DoAn2.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,6 +38,11 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
     name: "trang-chu",
     pattern: "trang-chu",
+    defaults: new { controller = "Home", action = "Index" });
+
+    endpoints.MapControllerRoute(
+    name: "may-tinh",
+    pattern: "may-tinh",
     defaults: new { controller = "Computer", action = "Index" });
 
     endpoints.MapControllerRoute(

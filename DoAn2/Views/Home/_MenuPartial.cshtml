@@ -1,0 +1,64 @@
+﻿@model DoAn2.ViewModels.ComputerViewModel
+<div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="#!">Cyber Main </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            @foreach (var item in Model.Menus)
+            {
+                @if (item.IdMenu.Equals("MM02"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="@item.Link" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Máy Tính
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="@item.Link">Tất Cả</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @foreach (var item2 in Model.Menus)
+                            {
+                                @if (item2.IdMenu.Substring(0, 3).Equals("SMC"))
+                                {
+                                    <li><a class="dropdown-item" href="@item2.Link">@item2.Title</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+
+                }
+                if (item.IdMenu.Equals("MM03"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="@item.Link" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Đồ Ăn
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="@item.Link">Tất Cả</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @foreach (var item2 in Model.Menus)
+                            {
+                                @if (item2.IdMenu.Substring(0, 3).Equals("SMF"))
+                                {
+                                    <li><a class="dropdown-item" href="@item2.Link">@item2.Title</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+                @if (item.IdMenu.Equals("MM01") || item.IdMenu.Equals("MM04"))
+                {
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="@item.Link">@item.Title</a></li>
+                }
+
+            }
+
+        </ul>
+        <form class="d-flex">
+            <button class="btn btn-outline-dark" type="submit">
+                <i class="bi-cart-fill me-1"></i>
+                Cart
+                <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+            </button>
+        </form>
+    </div>
+</div>

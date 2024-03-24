@@ -1,32 +1,30 @@
+
 using DoAn2.Models;
+using DoAn2.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace DoAn2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly DoAnWebContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(DoAnWebContext context)
         {
-            _logger = logger;
+            _context = context;
+        }
+        public async Task<IActionResult> Index()
+        {
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var ViewModel = new ComputerViewModel
+            {
+                Menus = menus
+            };
+            return View(ViewModel);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
