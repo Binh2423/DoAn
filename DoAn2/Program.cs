@@ -50,6 +50,40 @@ app.UseEndpoints(endpoints =>
     pattern: "do-an",
     defaults: new { controller = "Food", action = "Index" });
 
+    endpoints.MapControllerRoute(
+    name: "mon-chinh",
+    pattern: "mon-chinh",
+    defaults: new { controller = "Food", action = "Mon_Chinh" });
+
+    endpoints.MapControllerRoute(
+    name: "nuoc-uong",
+    pattern: "nuoc-uong",
+    defaults: new { controller = "Food", action = "Nuoc_Uong" });
+
+    endpoints.MapControllerRoute(
+    name: "nuoc-pha-che",
+    pattern: "nuoc-pha-che",
+    defaults: new { controller = "Food", action = "Nuoc_Pha_Che" });
+
+    endpoints.MapControllerRoute(
+    name: "do-an-vat",
+    pattern: "do-an-vat",
+    defaults: new { controller = "Food", action = "Do_An_Vat" });
+
+    endpoints.MapControllerRoute(
+    name: "khu-may-7",
+    pattern: "khu-may-7",
+    defaults: new { controller = "Computer", action = "Khu_7" });
+
+    endpoints.MapControllerRoute(
+    name: "khu-may-8",
+    pattern: "khu-may-8",
+    defaults: new { controller = "Computer", action = "Khu_8" });
+
+    endpoints.MapControllerRoute(
+    name: "khu-may-10",
+    pattern: "khu-may-10",
+    defaults: new { controller = "Computer", action = "Khu_10" });
 });
 
 

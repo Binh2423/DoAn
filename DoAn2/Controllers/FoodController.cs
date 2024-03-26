@@ -39,5 +39,57 @@ namespace DoAn2.Controllers
         {
             return PartialView();
         }
+        public async Task<IActionResult> Mon_Chinh()
+        {
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai=="TP04").ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                ThucPhams = thucphams
+
+            };
+            return View(ViewModel);
+        }
+        public async Task<IActionResult> Nuoc_Uong()
+        {
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP01").ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                ThucPhams = thucphams
+
+            };
+            return View(ViewModel);
+        }
+        public async Task<IActionResult> Nuoc_Pha_Che()
+        {
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP02").ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                ThucPhams = thucphams
+
+            };
+            return View(ViewModel);
+        }
+        public async Task<IActionResult> Do_An_Vat()
+        {
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP03").ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                ThucPhams = thucphams
+
+            };
+            return View(ViewModel);
+        }
     }
 }

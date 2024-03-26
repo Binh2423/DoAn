@@ -25,6 +25,10 @@ namespace DoAn2.Controllers
             };
             return View(ViewModel);
         }
+        public async Task<IActionResult> _SliderPartial()
+        {
+            return PartialView();
+        }
 
     }
 }
