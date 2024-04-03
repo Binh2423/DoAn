@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DoAn2.ViewModels.UserViewModel
+<div class="panel panel-primary">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner fa-spin"></i> Đăng nhập hệ thống</div>
+    <div class="panel-body">
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+        <form class="form form-horizontal" asp-action="Login" asp-controller="User"
+              method="POST">
+            <div class="form-group">
+                <label asp-for="Register.Sdt" class="col-md-3 control-label"></label>
+                <div class="col-md-9">
+                    <input class="form-control" asp-for="Register.Sdt"
+                           placeholder="Nhập số điện thoại" autofocus required
+                           pattern="(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]‌​)\s*)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)([2-9]1[02-9]‌​|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})\s*(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+)\s*)?$" />
+                    <span asp-validation-for="Register.Sdt" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Register.MatKhau" class="col-md-3 control-label"></label>
+                <div class="col-md-9">
+                    <input type="password" class="form-control" asp-for="Register.MatKhau" id="password" placeholder="Nhập mật khẩu" required />
+                    <span asp-validation-for="Register.MatKhau" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-danger">Đăng nhập</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

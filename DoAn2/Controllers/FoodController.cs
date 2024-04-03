@@ -39,57 +39,27 @@ namespace DoAn2.Controllers
         {
             return PartialView();
         }
-        public async Task<IActionResult> Mon_Chinh()
+        public async Task<IActionResult> CateFood(String link)
         {
 
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai=="TP04").ToListAsync();
+            var catefood =await _context.LoaiThucPhams.Where(m=> m.Link == link).FirstOrDefaultAsync();
+            if(catefood == null)
+            {
+                return NotFound();
+            }
+
+            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == catefood.MaLoai).ToListAsync();
             var ViewModel = new FoodViewModel
             {
                 Menus = menus,
                 ThucPhams = thucphams
-
             };
             return View(ViewModel);
         }
-        public async Task<IActionResult> Nuoc_Uong()
+        public async Task<IActionResult> _CartPartial()
         {
-
-            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP01").ToListAsync();
-            var ViewModel = new FoodViewModel
-            {
-                Menus = menus,
-                ThucPhams = thucphams
-
-            };
-            return View(ViewModel);
-        }
-        public async Task<IActionResult> Nuoc_Pha_Che()
-        {
-
-            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP02").ToListAsync();
-            var ViewModel = new FoodViewModel
-            {
-                Menus = menus,
-                ThucPhams = thucphams
-
-            };
-            return View(ViewModel);
-        }
-        public async Task<IActionResult> Do_An_Vat()
-        {
-
-            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var thucphams = await _context.ThucPhams.Where(m => m.Hide == false && m.MaLoai == "TP03").ToListAsync();
-            var ViewModel = new FoodViewModel
-            {
-                Menus = menus,
-                ThucPhams = thucphams
-
-            };
-            return View(ViewModel);
+            return PartialView();
         }
     }
 }

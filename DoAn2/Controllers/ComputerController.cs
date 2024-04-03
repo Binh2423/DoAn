@@ -34,42 +34,26 @@ namespace DoAn2.Controllers
         {
             return PartialView();
         }
-        public async Task<IActionResult> Khu_7()
+        public async Task<IActionResult> CateCom(String link)
         {
-
-            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.Gia.ToString().Equals("7000")).OrderBy(m => m.Order).ToListAsync();
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var catecom = await _context.LoaiThucPhams.FirstOrDefaultAsync(m => m.Link == link);
+            if(catecom == null)
+            {
+                return NotFound();
+            }
+
+            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.Gia.ToString().Equals(catecom.MaLoai)).OrderBy(m => m.Order).ToListAsync();
+           
             var ViewModel = new ComputerViewModel
             {
                 MayTinhs = maytinhs,
                 Menus = menus
             };
-            return View(ViewModel);
-        }
-        public async Task<IActionResult> Khu_8()
-        {
 
-            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.Gia.ToString().Equals("8000")).OrderBy(m => m.Order).ToListAsync();
-            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var ViewModel = new ComputerViewModel
-            {
-                MayTinhs = maytinhs,
-                Menus = menus
-            };
             return View(ViewModel);
         }
-        public async Task<IActionResult> Khu_10()
-        {
-
-            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.Gia.ToString().Equals("10000")).OrderBy(m => m.Order).ToListAsync();
-            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var ViewModel = new ComputerViewModel
-            {
-                MayTinhs = maytinhs,
-                Menus = menus
-            };
-            return View(ViewModel);
-        }
+        
     }
 
 }

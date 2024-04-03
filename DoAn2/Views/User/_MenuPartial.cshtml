@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims
-@model DoAn2.ViewModels.FoodViewModel
+@model DoAn2.ViewModels.UserViewModel
 <div class="container px-4 px-lg-5">
     <a class="navbar-brand" href="#!">Cyber Main </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -54,12 +54,12 @@
             }
 
         </ul>
-        <ul class="nav navbar-nav navbar-right ">
+        <ul class="nav navbar-nav navbar-right">
             @if (User.Identity.IsAuthenticated)
             {
                 string username = User.Identity.Name;
                 string permission = User.FindFirst(ClaimTypes.Role)?.Value;
-                if (permission == "VT01")
+                if (permission == "1")
                 {
                     <li><a href="quan-tri"><span class="glyphicon glyphicon-cog"></span></a></li>
                 }
@@ -83,8 +83,18 @@
             }
             else
             {
-                <li><a href="dang-ky"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="dang-nhap"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li>
+                    <a href="dang-ky">
+                        <span class="glyphicon glyphicon-user"></span> Đăng
+                        ký
+                    </a>
+                </li>
+                <li>
+                    <a href="dang-nhap">
+                        <span class="glyphicon glyphicon-log-in"></span> Đăng
+                        nhập
+                    </a>
+                </li>
             }
         </ul>
     </div>

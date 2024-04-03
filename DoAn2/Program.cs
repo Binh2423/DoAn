@@ -1,9 +1,11 @@
 using DoAn2.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 var connectionString =
 builder.Configuration.GetConnectionString("DoAnWebConnection");
@@ -11,6 +13,14 @@ builder.Services.AddDbContext<DoAnWebContext>(options =>
  options.UseSqlServer(connectionString));
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+AddCookie(options =>
+{
+    options.Cookie.Name = "PetStoreCookie";
+    options.LoginPath = "/User/Login";
+});
+
 
 var app = builder.Build();
 
@@ -27,18 +37,28 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    
 
     endpoints.MapControllerRoute(
     name: "trang-chu",
     pattern: "trang-chu",
     defaults: new { controller = "Home", action = "Index" });
+
+    endpoints.MapControllerRoute(
+    name: "dang-ky",
+    pattern: "dang-ky",
+    defaults: new { controller = "User", action = "Register" });
+
+    endpoints.MapControllerRoute(
+    name: "dang-nhap",
+    pattern: "dang-nhap",
+    defaults: new { controller = "User", action = "Login" });
 
     endpoints.MapControllerRoute(
     name: "may-tinh",
@@ -51,24 +71,9 @@ app.UseEndpoints(endpoints =>
     defaults: new { controller = "Food", action = "Index" });
 
     endpoints.MapControllerRoute(
-    name: "mon-chinh",
-    pattern: "mon-chinh",
-    defaults: new { controller = "Food", action = "Mon_Chinh" });
-
-    endpoints.MapControllerRoute(
-    name: "nuoc-uong",
-    pattern: "nuoc-uong",
-    defaults: new { controller = "Food", action = "Nuoc_Uong" });
-
-    endpoints.MapControllerRoute(
-    name: "nuoc-pha-che",
-    pattern: "nuoc-pha-che",
-    defaults: new { controller = "Food", action = "Nuoc_Pha_Che" });
-
-    endpoints.MapControllerRoute(
-    name: "do-an-vat",
-    pattern: "do-an-vat",
-    defaults: new { controller = "Food", action = "Do_An_Vat" });
+    name: "{link}",
+    pattern: "{link}",
+    defaults: new { controller = "Food", action = "CateFood" });
 
     endpoints.MapControllerRoute(
     name: "khu-may-7",
@@ -84,6 +89,10 @@ app.UseEndpoints(endpoints =>
     name: "khu-may-10",
     pattern: "khu-may-10",
     defaults: new { controller = "Computer", action = "Khu_10" });
+
+    endpoints.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 
 
