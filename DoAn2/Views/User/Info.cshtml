@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model DoAn2.ViewModels.UserViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i> Thông tin người dùng</div>
+    <div class="panel-body">
+        <form class="form form-horizontal">
+            <div class="form-group">
+                <label class="col-md-3">Số điện thoại: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" asp-for="Register.Sdt" readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3">Họ và tên: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" asp-for="User.HoTen"
+                           readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3">Địa chỉ: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" asp-for="User.DiaChi"
+                           readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3">Email: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" asp-for="User.Email"
+                           readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3">Ngày sinh: </label>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" asp-for="User.NgaySinh"
+                           readonly />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

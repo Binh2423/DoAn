@@ -5,7 +5,7 @@ namespace DoAn2.Models;
 
 public partial class ThucPham
 {
-    public string MaTp { get; set; } = null!;
+    public int MaTp { get; set; }
 
     public string MaLoai { get; set; } = null!;
 

@@ -1,0 +1,124 @@
+﻿@model DoAn2.ViewModels.HomeViewModel
+<div class="panel panel-info panel-prod">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i> Máy Tính</div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var item in Model.Maytinhs)
+            {
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img src="~/images/@item.HinhAnh" class="img-rounded"
+                             alt="@item.TenMay">
+                        <div class="caption">
+                            <h4>@item.TenMay</h4>
+                            <p>Giá: @string.Format("{0:N0}", item.Gia) VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod">
+            <a href="may-tinh">Xem thêm sản phẩm...</a>
+        </p>
+    </div>
+</div>
+<!--
+<div class="panel panel-info panel-prod">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i>Món Chính</div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var item in Model.Monchinhs)
+            {
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img class="card-img-top" src="~/images/@item.HinhAnh" alt="..." height="200px" width="300px" />
+                        <div class="caption">
+                            <h4>@item.TenTp</h4>
+                            <p>Giá: @string.Format("{0:N0}", item.GiaTp) VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod">
+            <a href="mon-chinh">Xem thêm sản phẩm...</a>
+        </p>
+    </div>
+</div>
+<div class="panel panel-info panel-prod">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i>Đồ Ăn Vặt</div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var item in Model.Doanvats)
+            {
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img class="card-img-top" src="~/images/@item.HinhAnh" alt="..." height="200px" width="300px" />
+                        <div class="caption">
+                            <h4>@item.TenTp</h4>
+                            <p>Giá: @string.Format("{0:N0}", item.GiaTp) VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod">
+            <a href="do-an-vat">Xem thêm sản phẩm...</a>
+        </p>
+    </div>
+</div>
+<div class="panel panel-info panel-prod">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i>Đồ Uống</div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var item in Model.Douongs)
+            {
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img class="card-img-top" src="~/images/@item.HinhAnh" alt="..." height="200px" width="300px" />
+                        <div class="caption">
+                            <h4>@item.TenTp</h4>
+                            <p>Giá: @string.Format("{0:N0}", item.GiaTp) VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod">
+            <a href="nuoc-uong">Xem thêm sản phẩm...</a>
+        </p>
+    </div>
+</div>
+<div class="panel panel-info panel-prod">
+    <div class="panel-heading panel-heading-prod"><i class="fa fa-spinner faspin"></i>Nước Pha Chế</div>
+    <div class="panel-body">
+        <div class="row">
+            @foreach (var item in Model.Nuocphaches)
+            {
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img class="card-img-top" src="~/images/@item.HinhAnh" alt="..." height="200px" width="300px" />
+                        <div class="caption">
+                            <h4>@item.TenTp</h4>
+                            <p>Giá: @string.Format("{0:N0}", item.GiaTp) VNĐ</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="panel-footer">
+        <p class="more-prod">
+            <a href="nuoc-pha-che">Xem thêm sản phẩm...</a>
+        </p>
+    </div>
+</div>
+-->

@@ -1,6 +1,8 @@
 using DoAn2.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +63,17 @@ app.UseEndpoints(endpoints =>
     defaults: new { controller = "User", action = "Login" });
 
     endpoints.MapControllerRoute(
+    name: "dang-xuat",
+    pattern: "dang-xuat",
+    defaults: new { controller = "User", action = "Logout" });
+
+    endpoints.MapControllerRoute(
+    name: "thong-tin",
+    pattern: "thong-tin",
+    defaults: new { controller = "User", action = "Info" });
+
+
+    endpoints.MapControllerRoute(
     name: "may-tinh",
     pattern: "may-tinh",
     defaults: new { controller = "Computer", action = "Index" });
@@ -76,19 +89,11 @@ app.UseEndpoints(endpoints =>
     defaults: new { controller = "Food", action = "CateFood" });
 
     endpoints.MapControllerRoute(
-    name: "khu-may-7",
-    pattern: "khu-may-7",
-    defaults: new { controller = "Computer", action = "Khu_7" });
+    name: "{link}",
+    pattern: "{link}",
+    defaults: new { controller = "Computer", action = "CateCom" });
 
-    endpoints.MapControllerRoute(
-    name: "khu-may-8",
-    pattern: "khu-may-8",
-    defaults: new { controller = "Computer", action = "Khu_8" });
-
-    endpoints.MapControllerRoute(
-    name: "khu-may-10",
-    pattern: "khu-may-10",
-    defaults: new { controller = "Computer", action = "Khu_10" });
+   
 
     endpoints.MapControllerRoute(
     name: "default",

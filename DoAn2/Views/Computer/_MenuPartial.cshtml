@@ -52,39 +52,40 @@
                 }
 
             }
-            <ul class="nav navbar-nav navbar-right ">
-                @if (User.Identity.IsAuthenticated)
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right ">
+            @if (User.Identity.IsAuthenticated)
+            {
+                string username = User.Identity.Name;
+                string permission = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (permission == "VT01")
                 {
-                    string username = User.Identity.Name;
-                    string permission = User.FindFirst(ClaimTypes.Role)?.Value;
-                    if (permission == "VT01")
-                    {
-                        <li><a href="quan-tri"><span class="glyphicon glyphicon-cog"></span></a></li>
-                    }
-                    else
-                    {
-                        <form class="d-flex">
-                            <button class="btn btn-outline-dark" type="submit">
-                                <i class="bi-cart-fill me-1"></i>
-                                Cart
-                                <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                            </button>
-                        </form>
-                    }
-                    <li>
-                        <a href="thong-tin">
-                            <span class="glyphicon glyphicon-user"></span>
-                            @username
-                        </a>
-                    </li>
-                    <li><a href="dang-xuat"><span class="glyphicon glyphicon-log-out"></span></a></li>
+                    <li><a href="quan-tri"><span class="glyphicon glyphicon-cog"></span></a></li>
                 }
                 else
                 {
-                    <li><a href="dang-ky"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="dang-nhap"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>
                 }
-            </ul>
-       
+                <li>
+                    <a href="thong-tin">
+                        <span class="glyphicon glyphicon-user"></span>
+                        @username
+                    </a>
+                </li>
+                <li><a href="dang-xuat"><span class="glyphicon glyphicon-log-out"></span></a></li>
+            }
+            else
+            {
+                <li><a href="dang-ky"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="dang-nhap"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            }
+        </ul>
     </div>
 </div>

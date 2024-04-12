@@ -50,10 +50,7 @@ public partial class DoAnWebContext : DbContext
             entity.Property(e => e.SoHd)
                 .HasMaxLength(10)
                 .HasColumnName("SoHD");
-            entity.Property(e => e.MaTp)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("MaTP");
+            entity.Property(e => e.MaTp).HasColumnName("MaTP");
 
             entity.HasOne(d => d.MaTpNavigation).WithMany(p => p.Cthds)
                 .HasForeignKey(d => d.MaTp)
@@ -145,7 +142,7 @@ public partial class DoAnWebContext : DbContext
 
         modelBuilder.Entity<Menu>(entity =>
         {
-            entity.HasKey(e => e.IdMenu).HasName("PK__Menu__4D7EA8E1990CCDD5");
+            entity.HasKey(e => e.IdMenu).HasName("PK__Menu__4D7EA8E15A0A2735");
 
             entity.ToTable("Menu");
 
@@ -193,7 +190,7 @@ public partial class DoAnWebContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("MaVT");
             entity.Property(e => e.MatKhau)
-                .HasMaxLength(50)
+                .HasMaxLength(255)
                 .IsUnicode(false);
             entity.Property(e => e.SoTienTrongTk).HasColumnName("SoTienTrongTK");
 
@@ -215,8 +212,7 @@ public partial class DoAnWebContext : DbContext
             entity.ToTable("ThucPham");
 
             entity.Property(e => e.MaTp)
-                .HasMaxLength(10)
-                .IsUnicode(false)
+                .ValueGeneratedNever()
                 .HasColumnName("MaTP");
             entity.Property(e => e.GiaTp).HasColumnName("GiaTP");
             entity.Property(e => e.HinhAnh)

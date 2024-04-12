@@ -48,8 +48,10 @@ namespace DoAn2.Controllers
                 model.Register.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.Register.MatKhau);
                 model.Register.MaVt = "VT04";
                 model.Register.Hide = false;
+
                 model.User.Sdt = model.Register.Sdt;
                 model.User.Hide = false;
+
                 _context.TaiKhoans.Add(model.Register);
                 _context.NguoiDungs.Add(model.User);
                 await _context.SaveChangesAsync();
@@ -81,8 +83,7 @@ namespace DoAn2.Controllers
             };
             if (model.Register != null)
             {
-                var user = await _context.TaiKhoans.FirstOrDefaultAsync(u => u.Sdt ==
-               model.Register.Sdt);
+                var user = await _context.TaiKhoans.FirstOrDefaultAsync(u => u.Sdt ==  model.Register.Sdt);
                 if (user != null && BCrypt.Net.BCrypt.Verify(model.Register.MatKhau,user.MatKhau))
                 {
                     var claims = new List<Claim>
@@ -108,6 +109,33 @@ namespace DoAn2.Controllers
                 }
             }
             return View(viewModel);
+        }
+        public async Task<IActionResult> Info()
+        {
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var taikhoan = new TaiKhoan();
+            var user = new NguoiDung();
+            if (User.Identity.IsAuthenticated)
+            {
+                string username = User.Identity.Name;
+                if (username != null)
+                {
+                   taikhoan = await _context.TaiKhoans.FirstOrDefaultAsync(m => m.Sdt == username);
+                   user = await _context.NguoiDungs.FirstOrDefaultAsync(m => m.Sdt == username);
+                }
+            }
+            var viewModel = new UserViewModel
+            {
+                Menus = menus,
+                Register = taikhoan,
+                User = user
+            };
+            return View(viewModel);
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

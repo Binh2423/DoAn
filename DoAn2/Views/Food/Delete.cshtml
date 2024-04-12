@@ -1,0 +1,64 @@
+﻿@model DoAn2.Models.ThucPham
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ThucPham</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenTp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TenTp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GiaTp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GiaTp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HinhAnh)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Order)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Hide)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Hide)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaLoaiNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MaLoaiNavigation.MaLoai)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="MaTp" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

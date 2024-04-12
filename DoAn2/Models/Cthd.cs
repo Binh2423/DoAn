@@ -7,7 +7,7 @@ public partial class Cthd
 {
     public byte[] SoHd { get; set; } = null!;
 
-    public string MaTp { get; set; } = null!;
+    public int MaTp { get; set; }
 
     public short? SoLuong { get; set; }
 
