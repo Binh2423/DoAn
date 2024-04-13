@@ -2,6 +2,7 @@ using DoAn2.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ AddCookie(options =>
     options.LoginPath = "/User/Login";
 });
 
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -43,59 +45,81 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseSession();
+
 app.UseEndpoints(endpoints =>
 {
     
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "trang-chu",
     pattern: "trang-chu",
     defaults: new { controller = "Home", action = "Index" });
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "dang-ky",
     pattern: "dang-ky",
     defaults: new { controller = "User", action = "Register" });
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "dang-nhap",
     pattern: "dang-nhap",
     defaults: new { controller = "User", action = "Login" });
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "dang-xuat",
     pattern: "dang-xuat",
     defaults: new { controller = "User", action = "Logout" });
 
-    endpoints.MapControllerRoute(
+    _=endpoints.MapControllerRoute(
+    name: "gio-hang",
+    pattern: "gio-hang",
+    defaults: new { controller = "Cart", action = "Index" });
+
+    _ = endpoints.MapControllerRoute(
+    name: "them-gio-hang",
+    pattern: "them-gio-hang",
+    defaults: new { controller = "Cart", action = "AddItem" });
+
+    _ = endpoints.MapControllerRoute(
     name: "thong-tin",
     pattern: "thong-tin",
     defaults: new { controller = "User", action = "Info" });
 
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "may-tinh",
     pattern: "may-tinh",
     defaults: new { controller = "Computer", action = "Index" });
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "do-an",
     pattern: "do-an",
     defaults: new { controller = "Food", action = "Index" });
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
+    name: "them-do-an",
+    pattern: "them-do-an",
+    defaults: new { controller = "Food", action = "Add" });
+
+  
+
+
+    _ = endpoints.MapControllerRoute(
     name: "{link}",
     pattern: "{link}",
     defaults: new { controller = "Food", action = "CateFood" });
 
-    endpoints.MapControllerRoute(
+    
+
+
+    _= endpoints.MapControllerRoute(
     name: "{link}",
     pattern: "{link}",
     defaults: new { controller = "Computer", action = "CateCom" });
 
-   
 
-    endpoints.MapControllerRoute(
+    _= endpoints.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 });

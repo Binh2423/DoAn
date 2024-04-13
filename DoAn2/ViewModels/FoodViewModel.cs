@@ -7,6 +7,6 @@ namespace DoAn2.ViewModels
         public List<Menu> Menus { get; set; }
         public List<ThucPham> ThucPhams { get; set; }
         
-        public ThucPham AddTP {  get; set; }
+        public ThucPham TP {  get; set; }
     }
 }

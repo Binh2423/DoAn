@@ -23,5 +23,5 @@ public partial class ThucPham
 
     public virtual ICollection<Cthd> Cthds { get; set; } = new List<Cthd>();
 
-    public virtual LoaiThucPham MaLoaiNavigation { get; set; } = null!;
+    public virtual Loai MaLoaiNavigation { get; set; } = null!;
 }

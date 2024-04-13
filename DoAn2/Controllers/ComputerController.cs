@@ -34,16 +34,16 @@ namespace DoAn2.Controllers
         {
             return PartialView();
         }
-        public async Task<IActionResult> CateCom(String link)
+        public async Task<IActionResult> CateCom(String link,String maloai)
         {
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var catecom = await _context.LoaiThucPhams.FirstOrDefaultAsync(m => m.Link == link);
+            var catecom = await _context.Loais.FirstOrDefaultAsync(m => m.Link == link && m.MaLoai==maloai);
             if(catecom == null)
             {
                 return NotFound();
             }
 
-            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.Gia.ToString().Equals(catecom.MaLoai)).OrderBy(m => m.Order).ToListAsync();
+            var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false && m.MaLoai == catecom.MaLoai).OrderBy(m => m.Order).ToListAsync();
            
             var ViewModel = new ComputerViewModel
             {

@@ -23,7 +23,7 @@ namespace DoAn2.Controllers
 
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
             var thucphams = await _context.ThucPhams.Where(m => m.Hide == false).ToListAsync();
-            var Loai = await _context.LoaiThucPhams.Where(m => m.MaLoai.Substring(0, 2) == "TP").ToListAsync();
+            var Loai = await _context.Loais.Where(m => m.MaLoai.Substring(0, 2) == "TP").ToListAsync();
             ViewBag.Loai = new SelectList(Loai, "MaLoai", "TenLoai");
             var ViewModel = new FoodViewModel
             {
@@ -33,25 +33,39 @@ namespace DoAn2.Controllers
             };
             return View(ViewModel);
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(ThucPham tp, IFormFile imageUrl)
+        public async Task<IActionResult> Add()
         {
-            var loai = await _context.LoaiThucPhams.Select(m=> m.MaLoai).ToListAsync();
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var Loai = await _context.Loais.Where(m => m.MaLoai.Substring(0, 2) == "TP").ToListAsync();
+            ViewBag.Loai = new SelectList(Loai, "MaLoai", "TenLoai");
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+            };
+            return View(ViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Add(ThucPham tp, IFormFile HinhAnh)
+        {
+           
             var thucpham = await _context.ThucPhams.ToListAsync();
             if(thucpham.Count==0)
             {
                 tp.MaTp = 1;
+                tp.Order = 1;
             }
             else
             {
                 tp.MaTp = thucpham.Count+1;
+                tp.Order = thucpham.Count+1;
             }
             if (ModelState != null)
             {
-                if (imageUrl != null)
+                if (HinhAnh != null)
                 {
-                    tp.HinhAnh = await SaveImage(imageUrl);
+                    tp.HinhAnh = await SaveImage(HinhAnh);
                 }
+                tp.Hide = false;
                 await _context.ThucPhams.AddAsync(tp);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index","Food");
@@ -60,26 +74,7 @@ namespace DoAn2.Controllers
             return View(tp);
             
         }
-        [HttpPost]
-        public async Task<JsonResult> Delete(int maTp)
-        {
-            try
-            {
-                var thucPham = await _context.ThucPhams.FindAsync(maTp);
-                if (thucPham != null)
-                {
-                    thucPham.Hide = true;
-                    _context.ThucPhams.Update(thucPham);
-                    await _context.SaveChangesAsync();
-                    return Json(new { success = true });
-                }
-                return Json(new { success = false, error = "Document not found" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, error = ex.Message });
-            }
-        }
+
         private async Task<String> SaveImage(IFormFile image)
         {
             var savePath = Path.Combine("wwwroot/images", image.FileName);
@@ -87,7 +82,20 @@ namespace DoAn2.Controllers
             {
                 await image.CopyToAsync(fileStream);
             }
-            return  image.FileName;
+            return "/images/" + image.FileName;
+        }
+
+        public async Task<JsonResult> Delete(int maTp)
+        {
+            var thucPham = await _context.ThucPhams.SingleOrDefaultAsync(m => m.MaTp == maTp);
+            if (thucPham != null)
+            {
+                thucPham.Hide = true;
+                _context.ThucPhams.Update(thucPham); // Remove the entity
+                await _context.SaveChangesAsync(); // Save changes to the database
+                return Json(new { success = true });
+            }
+            return Json(new { success = false, error = "Document not found" });
         }
         public async Task<IActionResult> _MenuPartial()
         {
@@ -105,7 +113,7 @@ namespace DoAn2.Controllers
         {
 
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
-            var catefood =await _context.LoaiThucPhams.Where(m=> m.Link == link).FirstOrDefaultAsync();
+            var catefood =await _context.Loais.Where(m=> m.Link == link).FirstOrDefaultAsync();
             if(catefood == null)
             {
                 return NotFound();
@@ -124,28 +132,39 @@ namespace DoAn2.Controllers
             return PartialView();
         }
 
-        public JsonResult DSThucPham()
-        {
-            try {
-                var dsThucPham = (from i in _context.ThucPhams.Where(m => m.Hide == false)
-                                  select new
-                                  {
-                                      MaTp = i.MaTp,
-                                      TenTp = i.TenTp,
-                                      MaLoai = i.MaLoai,
-                                      GiaTp = i.GiaTp,
-                                      SoLuong = i.SoLuong,
-                                      HinhAnh = i.HinhAnh,
-                                      Order = i.Order,
-                                      Hide = i.Hide,
-                                  }).ToList();
-                return Json(new {code = 200, dsThucPham = dsThucPham});
-            }
-            catch
-            {
-                return Json(new { code = 00, msg = "False" });
-            }
-        }
        
+        public async Task<IActionResult> Edit(int maTp)
+        {
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var Loai = await _context.Loais.Where(m => m.MaLoai.Substring(0, 2) == "TP").ToListAsync();
+            var thucPham = await _context.ThucPhams.SingleOrDefaultAsync(m => m.MaTp == maTp);
+            ViewBag.Loai = new SelectList(Loai, "MaLoai", "TenLoai");
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                TP = thucPham
+            };
+            return View(ViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ThucPham thucPham, IFormFile HinhAnh)
+        {
+            if (ModelState.IsValid)
+            {
+                if (HinhAnh != null)
+                {
+                    thucPham.HinhAnh = await SaveImage(HinhAnh);
+                }
+                _context.Update(thucPham);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Food");
+            }
+            return View(thucPham);
+
+
+        }
+
+
     }
 }

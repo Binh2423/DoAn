@@ -21,7 +21,7 @@ public partial class DoAnWebContext : DbContext
 
     public virtual DbSet<HoaDon> HoaDons { get; set; }
 
-    public virtual DbSet<LoaiThucPham> LoaiThucPhams { get; set; }
+    public virtual DbSet<Loai> Loais { get; set; }
 
     public virtual DbSet<MayTinh> MayTinhs { get; set; }
 
@@ -112,11 +112,11 @@ public partial class DoAnWebContext : DbContext
                 .HasConstraintName("FK__HoaDon__IdMay__4CA06362");
         });
 
-        modelBuilder.Entity<LoaiThucPham>(entity =>
+        modelBuilder.Entity<Loai>(entity =>
         {
             entity.HasKey(e => e.MaLoai).HasName("PK__LoaiThuc__730A5759D6FDEB76");
 
-            entity.ToTable("LoaiThucPham");
+            entity.ToTable("Loai");
 
             entity.Property(e => e.MaLoai)
                 .HasMaxLength(10)
@@ -137,7 +137,14 @@ public partial class DoAnWebContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false);
             entity.Property(e => e.HinhAnh).HasMaxLength(100);
+            entity.Property(e => e.MaLoai)
+                .HasMaxLength(10)
+                .IsUnicode(false);
             entity.Property(e => e.TenMay).HasMaxLength(30);
+
+            entity.HasOne(d => d.MaLoaiNavigation).WithMany(p => p.MayTinhs)
+                .HasForeignKey(d => d.MaLoai)
+                .HasConstraintName("FK_MayTinh_Loai");
         });
 
         modelBuilder.Entity<Menu>(entity =>
