@@ -5,9 +5,9 @@ namespace DoAn2.Models;
 
 public partial class HoaDon
 {
-    public byte[] SoHd { get; set; } = null!;
+    public int SoHd { get; set; }
 
-    public string IdMay { get; set; } = null!;
+    public string Sdt { get; set; } = null!;
 
     public int? TongTien { get; set; }
 
@@ -15,5 +15,5 @@ public partial class HoaDon
 
     public virtual ICollection<Cthd> Cthds { get; set; } = new List<Cthd>();
 
-    public virtual MayTinh IdMayNavigation { get; set; } = null!;
+    public virtual TaiKhoan SdtNavigation { get; set; } = null!;
 }

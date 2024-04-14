@@ -81,6 +81,16 @@ app.UseEndpoints(endpoints =>
     pattern: "them-gio-hang",
     defaults: new { controller = "Cart", action = "AddItem" });
 
+    _=endpoints.MapControllerRoute(
+    name: "thanh-toan",
+    pattern: "thanh-toan",
+    defaults: new { controller = "Cart", action = "Payment" });
+
+    _=endpoints.MapControllerRoute(
+    name: "hoan-thanh",
+    pattern: "hoan-thanh",
+    defaults: new { controller = "Cart", action = "Success" });
+
     _ = endpoints.MapControllerRoute(
     name: "thong-tin",
     pattern: "thong-tin",

@@ -25,7 +25,5 @@ public partial class MayTinh
 
     public virtual ICollection<Cttt> Cttts { get; set; } = new List<Cttt>();
 
-    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
-
     public virtual Loai? MaLoaiNavigation { get; set; }
 }

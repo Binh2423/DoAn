@@ -93,28 +93,106 @@ namespace DoAn2.Controllers
                 status = true
             });
         }
-       
+
         [HttpPost]
-        public IActionResult Update(string cartModel)
+        public IActionResult UpdateProduct(int id, int quantity)
         {
-            var jsonCart = JsonConvert.DeserializeObject<List<CartItem>>(cartModel);
-            var sessionCart =
-           JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(CartSession));
-            foreach (var item in sessionCart)
+            try
             {
-                var jsonItem = jsonCart.SingleOrDefault(x => x.thucpham.MaTp ==
-               item.thucpham.MaTp);
-                if (jsonItem != null)
+                // Lấy giỏ hàng hiện tại từ session
+                var sessionCart = HttpContext.Session.GetString(CartSession);
+                var existingCart = string.IsNullOrEmpty(sessionCart) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(sessionCart);
+
+                // Tìm kiếm sản phẩm cần cập nhật số lượng trong giỏ hàng
+                var cartItemToUpdate = existingCart.FirstOrDefault(x => x.thucpham.MaTp == id);
+
+                // Nếu sản phẩm tồn tại trong giỏ hàng
+                if (cartItemToUpdate != null)
                 {
-                    item.Quantity = jsonItem.Quantity;
+                    // Cập nhật số lượng của sản phẩm
+                    cartItemToUpdate.Quantity = quantity;
+
+                    // Lưu giỏ hàng đã cập nhật vào session
+                    HttpContext.Session.SetString(CartSession, JsonConvert.SerializeObject(existingCart));
+
+                    // Trả về một phản hồi JSON biểu thị thành công
+                    return Json(new { status = true });
+                }
+                else
+                {
+                    // Trả về một phản hồi JSON với status false nếu không tìm thấy sản phẩm trong giỏ hàng
+                    return Json(new { status = false, message = "Sản phẩm không tồn tại trong giỏ hàng" });
                 }
             }
-
-            HttpContext.Session.SetString(CartSession, JsonConvert.SerializeObject(sessionCart));
-            return Json(new
+            catch (Exception ex)
             {
-                status = true
-            });
+                // Trả về một phản hồi JSON với status false và thông báo lỗi nếu có ngoại lệ xảy ra
+                return Json(new { status = false, message = ex.Message });
+            }
         }
+        [HttpGet]
+        public async Task<IActionResult> Payment(string name)
+        {
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+          
+            var cart = HttpContext.Session.GetString(CartSession);
+            var list = new List<CartItem>();
+            if (!string.IsNullOrEmpty(cart))
+            {
+                list = JsonConvert.DeserializeObject<List<CartItem>>(cart);
+            }
+            var cartViewModel = new CartViewModel
+            {
+                Menus = menus,
+                CartItems = list
+            };
+            return View(cartViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Payment()
+        {
+            var order = new HoaDon();
+            order.NgayThanhToan = DateTime.Now;
+            var users = new TaiKhoan();
+            if (User.Identity.IsAuthenticated)
+            {
+                string username = User.Identity.Name;
+                if (username != null) users = await _context.TaiKhoans.FirstOrDefaultAsync(m =>
+               m.Sdt == username);
+            }
+            order.Sdt = users.Sdt;
+            try
+            {
+                int tong = 0;
+                _context.HoaDons.Add(order);
+                _context.SaveChanges();
+                var id = order.SoHd;
+                var cart =
+               JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(CartSession));
+                foreach (var item in cart)
+                {
+                    var detail = new Cthd();
+                    detail.MaTp = item.thucpham.MaTp;
+                    detail.SoHd = id;
+                    detail.SoLuong = (short?)item.Quantity;
+                    tong += (int)(item.thucpham.GiaTp * item.Quantity);
+                    _context.Cthds.Add(detail);
+                    _context.SaveChanges();
+                }
+                order.TongTien = tong;
+                _context.HoaDons.Update(order);
+                _context.SaveChanges();
+
+                return Json(new { status = true });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi ở đây nếu cần
+                return Json(new { status = false, error = ex.Message });
+            }
+        }
+
+      
     }
 }

@@ -1,6 +1,7 @@
 ﻿@model DoAn2.ViewModels.CartViewModel
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Payment";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,34 +18,27 @@
                                         <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
                                         <h6 class="mb-0 text-muted">@Model.CartItems.Count</h6>
                                     </div>
-                                    
+
                                     @foreach (var item in Model.CartItems)
                                     {
-                                        
+
                                         <hr class="my-4">
 
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                                 <img src="~/images/@item.thucpham.HinhAnh"
-                                                     class="img-fluid rounded-3" >
+                                                     class="img-fluid rounded-3">
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-3">
                                                 <h6 class="text-muted">@item.thucpham.MaLoai</h6>
                                                 <h6 class="text-black mb-0">@item.thucpham.TenTp</h6>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()" id="btnUpdate">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-
+                                               
                                                 <input id="form1" min="0" name="quantity" value="@item.Quantity" type="number"
-                                                       class="form-control form-control-sm" data-id="@item.thucpham.MaTp" />
+                                                       class="form-control form-control-sm" data-id="@item.thucpham.MaTp" disabled />
 
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()" id="btnUpdate">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
+                                              
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                                 <h6 class="mb-0">
@@ -83,33 +77,25 @@
                                         <h5>€ 132.00</h5>
                                     </div>
 
-                                   
 
-                                    <h5 class="text-uppercase mb-3">Give code</h5>
 
-                                    <div class="mb-5">
-                                        <div data-mdb-input-init class="form-outline">
-                                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
-                                            <label class="form-label" for="form3Examplea2">Enter your code</label>
-                                        </div>
-                                    </div>
-
+                                  
                                     <hr class="my-4">
 
                                     <div class="d-flex justify-content-between mb-5">
                                         <h5 class="text-uppercase">Total price</h5>
                                         <h5></h5>
                                     </div>
+                                    @using (Html.BeginForm("Payment", "Cart", FormMethod.Post, new { id = "checkoutForm" }))
+                                    {
+                                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg"
+                                                data-mdb-ripple-color="dark">
+                                            Checkout
+                                        </button>
+                                    }
 
-                                    <button id="btnDeleteAll" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg"
-                                            data-mdb-ripple-color="dark">
-                                        Delete all
-                                    </button>
-
-                                    <button id="btnPayment"  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg"
-                                            data-mdb-ripple-color="dark">
-                                        payment
-                                    </button>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
@@ -119,7 +105,41 @@
         </div>
     </div>
 </section>
-@section scripts {
-    <script src="~/js/cart.js"></script>
-}
 
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#checkoutForm').submit(function (event) {
+                // Ngăn chặn hành động mặc định của biểu mẫu
+                event.preventDefault();
+
+                // Hiển thị hộp thoại xác nhận
+                if (confirm('Bạn có chắc chắn muốn thanh toán đơn hàng này không?')) {
+                    // Nếu người dùng đồng ý, gửi yêu cầu AJAX
+                    $.ajax({
+                        url: '/Cart/Payment', // Đường dẫn tới phương thức thanh toán
+                        type: 'POST', // Phương thức POST
+                        success: function (response) {
+                            // Xử lý kết quả trả về từ server
+                            if (response.status === true) {
+                                // Nếu thanh toán thành công, chuyển hướng người dùng đến trang hoàn thành
+                                window.location.href = "/do-an";
+                            } else {
+                                // Nếu có lỗi xảy ra, hiển thị thông báo lỗi
+                                alert('Thanh toán thất bại. Vui lòng thử lại sau.');
+                            }
+                        },
+                        error: function () {
+                            // Xử lý lỗi khi yêu cầu gặp vấn đề
+                            alert('Đã xảy ra lỗi khi gửi yêu cầu thanh toán.');
+                        }
+                    });
+                } else {
+                    // Nếu người dùng không đồng ý, không làm gì cả
+                    // Có thể thêm mã xử lý khác tại đây nếu cần
+                }
+            });
+        });
+
+    </script>
+}

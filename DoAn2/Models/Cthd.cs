@@ -5,7 +5,7 @@ namespace DoAn2.Models;
 
 public partial class Cthd
 {
-    public byte[] SoHd { get; set; } = null!;
+    public int SoHd { get; set; }
 
     public int MaTp { get; set; }
 

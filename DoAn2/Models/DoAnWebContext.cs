@@ -47,9 +47,7 @@ public partial class DoAnWebContext : DbContext
 
             entity.ToTable("CTHD");
 
-            entity.Property(e => e.SoHd)
-                .HasMaxLength(10)
-                .HasColumnName("SoHD");
+            entity.Property(e => e.SoHd).HasColumnName("SoHD");
             entity.Property(e => e.MaTp).HasColumnName("MaTP");
 
             entity.HasOne(d => d.MaTpNavigation).WithMany(p => p.Cthds)
@@ -98,18 +96,18 @@ public partial class DoAnWebContext : DbContext
 
             entity.ToTable("HoaDon");
 
-            entity.Property(e => e.SoHd)
-                .HasMaxLength(10)
-                .HasColumnName("SoHD");
-            entity.Property(e => e.IdMay)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+            entity.Property(e => e.SoHd).HasColumnName("SoHD");
             entity.Property(e => e.NgayThanhToan).HasColumnType("datetime");
+            entity.Property(e => e.Sdt)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("SDT");
 
-            entity.HasOne(d => d.IdMayNavigation).WithMany(p => p.HoaDons)
-                .HasForeignKey(d => d.IdMay)
+            entity.HasOne(d => d.SdtNavigation).WithMany(p => p.HoaDons)
+                .HasForeignKey(d => d.Sdt)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__HoaDon__IdMay__4CA06362");
+                .HasConstraintName("FK_HoaDon_TaiKhoan");
         });
 
         modelBuilder.Entity<Loai>(entity =>
