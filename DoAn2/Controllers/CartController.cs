@@ -42,27 +42,26 @@ namespace DoAn2.Controllers
             if (!string.IsNullOrEmpty(cart))
             {
                 var list = JsonConvert.DeserializeObject<List<CartItem>>(cart);
-                if (list.Exists(x => x.thucpham.MaTp == ProductId))
+                var existingItem = list.FirstOrDefault(x => x.thucpham.MaTp == ProductId);
+                if (existingItem != null)
                 {
-                    foreach (var item in list)
+                    existingItem.Quantity += Quantity;
+                    if (existingItem.Quantity <= 0)
                     {
-                        if (item.thucpham.MaTp == ProductId)
-                        {
-                            item.Quantity += Quantity;
-                        }
+                        // Nếu Quantity <= 0, loại bỏ mục khỏi giỏ hàng
+                        list.Remove(existingItem);
                     }
                 }
-                else
+                else if (Quantity > 0)
                 {
                     var item = new CartItem();
                     item.thucpham = product;
                     item.Quantity = Quantity;
-
                     list.Add(item);
                 }
                 HttpContext.Session.SetString(CartSession, JsonConvert.SerializeObject(list));
             }
-            else
+            else if (Quantity > 0)
             {
                 var item = new CartItem();
                 item.thucpham = product;
@@ -73,6 +72,7 @@ namespace DoAn2.Controllers
             }
             return RedirectToAction("Index");
         }
+
         public IActionResult DeleteAll()
         {
             HttpContext.Session.Remove(CartSession);
@@ -94,42 +94,8 @@ namespace DoAn2.Controllers
             });
         }
 
-        [HttpPost]
-        public IActionResult UpdateProduct(int id, int quantity)
-        {
-            try
-            {
-                // Lấy giỏ hàng hiện tại từ session
-                var sessionCart = HttpContext.Session.GetString(CartSession);
-                var existingCart = string.IsNullOrEmpty(sessionCart) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(sessionCart);
+       
 
-                // Tìm kiếm sản phẩm cần cập nhật số lượng trong giỏ hàng
-                var cartItemToUpdate = existingCart.FirstOrDefault(x => x.thucpham.MaTp == id);
-
-                // Nếu sản phẩm tồn tại trong giỏ hàng
-                if (cartItemToUpdate != null)
-                {
-                    // Cập nhật số lượng của sản phẩm
-                    cartItemToUpdate.Quantity = quantity;
-
-                    // Lưu giỏ hàng đã cập nhật vào session
-                    HttpContext.Session.SetString(CartSession, JsonConvert.SerializeObject(existingCart));
-
-                    // Trả về một phản hồi JSON biểu thị thành công
-                    return Json(new { status = true });
-                }
-                else
-                {
-                    // Trả về một phản hồi JSON với status false nếu không tìm thấy sản phẩm trong giỏ hàng
-                    return Json(new { status = false, message = "Sản phẩm không tồn tại trong giỏ hàng" });
-                }
-            }
-            catch (Exception ex)
-            {
-                // Trả về một phản hồi JSON với status false và thông báo lỗi nếu có ngoại lệ xảy ra
-                return Json(new { status = false, message = ex.Message });
-            }
-        }
         [HttpGet]
         public async Task<IActionResult> Payment(string name)
         {
@@ -183,7 +149,7 @@ namespace DoAn2.Controllers
                 order.TongTien = tong;
                 _context.HoaDons.Update(order);
                 _context.SaveChanges();
-
+                HttpContext.Session.Clear();
                 return Json(new { status = true });
             }
             catch (Exception ex)

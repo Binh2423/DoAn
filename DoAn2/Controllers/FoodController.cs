@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Drawing;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 
@@ -33,7 +34,7 @@ namespace DoAn2.Controllers
             };
             return View(ViewModel);
         }
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Create()
         {
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
             var Loai = await _context.Loais.Where(m => m.MaLoai.Substring(0, 2) == "TP").ToListAsync();
@@ -44,46 +45,60 @@ namespace DoAn2.Controllers
             };
             return View(ViewModel);
         }
-        [HttpPost]
-        public async Task<IActionResult> Add(ThucPham tp, IFormFile HinhAnh)
+        private async Task<string> SaveImageAsync(IFormFile image)
         {
-           
+            // Ensure the directory exists
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            Directory.CreateDirectory(directory);
+
+            // Generate a unique file name to prevent collision
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+
+            var savePath = Path.Combine(directory, fileName);
+            using (var fileStream = new FileStream(savePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+            return fileName; // Return the unique file name
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(ThucPham tp, IFormFile HinhAnh)
+        {
             var thucpham = await _context.ThucPhams.ToListAsync();
-            if(thucpham.Count==0)
+            if (thucpham.Count == 0)
             {
                 tp.MaTp = 1;
                 tp.Order = 1;
             }
             else
             {
-                tp.MaTp = thucpham.Count+1;
-                tp.Order = thucpham.Count+1;
+                tp.MaTp = thucpham.Count + 1;
+                tp.Order = thucpham.Count + 1;
             }
-            if (ModelState != null)
+
+            if (ModelState.IsValid)
             {
                 if (HinhAnh != null)
                 {
-                    tp.HinhAnh = await SaveImage(HinhAnh);
+                    tp.HinhAnh = await SaveImageAsync(HinhAnh);
                 }
                 tp.Hide = false;
                 await _context.ThucPhams.AddAsync(tp);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index","Food");
+                return RedirectToAction("Index", "Food");
             }
-            
-            return View(tp);
+
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                TP = tp,
+            };
+            return View(ViewModel);
+
             
         }
 
-        private async Task<String> SaveImage(IFormFile image)
-        {
-            var savePath = Path.Combine("wwwroot/images", image.FileName);
-            using (var fileStream = new FileStream(savePath, FileMode.Create))
-            {
-                await image.CopyToAsync(fileStream);
-            }
-            return "/images/" + image.FileName;
-        }
 
         public async Task<JsonResult> Delete(int maTp)
         {
@@ -154,13 +169,19 @@ namespace DoAn2.Controllers
             {
                 if (HinhAnh != null)
                 {
-                    thucPham.HinhAnh = await SaveImage(HinhAnh);
+                    thucPham.HinhAnh = await SaveImageAsync(HinhAnh);
                 }
                 _context.Update(thucPham);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Food");
             }
-            return View(thucPham);
+            var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
+            var ViewModel = new FoodViewModel
+            {
+                Menus = menus,
+                TP = thucPham,
+            };
+            return View(ViewModel);
 
 
         }

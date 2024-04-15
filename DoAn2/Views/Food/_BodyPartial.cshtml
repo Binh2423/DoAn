@@ -18,7 +18,7 @@
             </div>
             <!-- Product actions-->
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <!--<div class="text-center">
+                <div class="text-center">
                     <a class="btn btn-outline-dark mt-auto" onclick="confirmDelete('@item.MaTp')">
                         <i class="fa-solid fa-trash"></i>Delete
                     </a>
@@ -29,12 +29,14 @@
                             <i class="fa-solid fa-pencil"></i>Edit
                         </a>
                     </div>
-                </div>-->
+                </div>
                 <div class="col-md-offset-4 col-md-8">
-                    <a class="btn btn-danger" href="/them-gio-hang?ProductId=@item.MaTp&Quantity=1">
-                        <i class="fa fa-spin fa-spinner"></i> Mua
-                        ngay
-                    </a>
+                    <div class="text-center">
+                       
+                        <a class="btn btn-outline-dark mt-auto" href="/them-gio-hang?ProductId=@item.MaTp&Quantity=1">
+                             <i class="fa fa-spin fa-spinner"></i> Mua ngay
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

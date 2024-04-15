@@ -23,7 +23,7 @@
                                         
                                         <hr class="my-4">
 
-                                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                        <div class="row mb-4 d-flex justify-content-between align-items-center quantity-input">
                                             <div class="col-md-2 col-lg-2 col-xl-2">
                                                 <img src="~/images/@item.thucpham.HinhAnh"
                                                      class="img-fluid rounded-3" >
@@ -33,24 +33,27 @@
                                                 <h6 class="text-black mb-0">@item.thucpham.TenTp</h6>
                                             </div>
                                             <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()" id="btnUpdate">
+                                                <a class="btn btn-outline-dark mt-auto" href="/them-gio-hang?ProductId=@item.thucpham.MaTp&Quantity=-1">
                                                     <i class="fas fa-minus"></i>
-                                                </button>
+                                                </a>
+                                                    
+                                                
 
-                                                <input id="form1" min="0" name="quantity" value="@item.Quantity" type="number"
-                                                       class="form-control form-control-sm" data-id="@item.thucpham.MaTp" />
+                                                <input id="quantity_@item.thucpham.MaTp" min="1" name="quantity" value="@item.Quantity" type="number" disabled
+                                                       class="form-control form-control-sm txtQuantity" data-id="@item.thucpham.MaTp" onchange="updateTotalPrice(@item.thucpham.MaTp)" />
 
-                                                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()" id="btnUpdate">
+                                                
+                                                <a class="btn btn-outline-dark mt-auto" href="/them-gio-hang?ProductId=@item.thucpham.MaTp&Quantity=1">
                                                     <i class="fas fa-plus"></i>
-                                                </button>
+                                                </a>
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                                <h6 class="mb-0">
-                                                    @String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"),
-                                                             "{0:c}", item.thucpham.GiaTp.GetValueOrDefault(0) * item.Quantity)
-                                                </h6>
+                                                <td class="amount">
+                                                    <span>@String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.thucpham.GiaTp)</span>
+                                                </td>
+                                                <td class="amount">
+                                                    <span>@String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.thucpham.GiaTp * item.Quantity)</span>
+                                                </td>
                                             </div>
                                             <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                                 <a href="#!" data-id="@item.thucpham.MaTp" class="text-muted btn-delete"><i class="fas fa-times"></i></a>
@@ -79,8 +82,8 @@
                                     <hr class="my-4">
 
                                     <div class="d-flex justify-content-between mb-4">
-                                        <h5 class="text-uppercase">items 3</h5>
-                                        <h5>€ 132.00</h5>
+                                        <h5 class="text-uppercase">Items <span id="totalQuantity">0</span></h5>
+                                        <h5><span id="totalPrice">0 ₫</span></h5>
                                     </div>
 
                                    
