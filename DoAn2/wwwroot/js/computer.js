@@ -1,24 +1,137 @@
-﻿$(document).ready(function () {
-    $('.btn-thue').click(function (event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của nút
-
-        var comId = $(this).data('comid'); // Lấy giá trị ComId từ thuộc tính data-comid của nút
-
-        // Gửi yêu cầu AJAX đến hàm ThueMay trong FoodController
+﻿function confirmDelete(IdMay) {
+    if (confirm("Are you sure you want to delete this item?")) {
         $.ajax({
-            url: '/Computer/ThueMay', // Đường dẫn tới hàm ThueMay trong controller
-            type: 'POST', // Phương thức POST
-            data: { ComId: comId }, // Dữ liệu gửi đi (ComId là giá trị bạn muốn truyền vào hàm ThueMay)
+            url: '/Computer/Delete',
+            type: 'POST',
+            data: { IdMay: IdMay },
             success: function (response) {
-                // Xử lý kết quả trả về từ server nếu cần
-                console.log(response);
-                // Ví dụ: chuyển hướng người dùng đến một trang khác
-                window.location.href = "/may-tinh"; // Chuyển hướng đến trang chủ
+                if (response.success) {
+                    // Hiển thị thông báo xóa thành công
+                    alert('Item deleted successfully.');
+                    // Reload page or update UI as needed
+                    location.reload();
+                } else {
+                    // Hiển thị thông báo lỗi nếu có
+                    alert('Failed to delete item: ' + response.error);
+                }
             },
-            error: function () {
-                // Xử lý lỗi khi yêu cầu gặp vấn đề
-                alert('Đã xảy ra lỗi khi gọi hàm ThueMay.');
+            error: function (xhr, status, error) {
+                // Hiển thị thông báo lỗi nếu có
+                alert('Error: ' + error);
             }
         });
+    }
+};
+
+function confirmRent(IdMay) {
+    if (confirm("Bạn có muốn thuê máy này không ?")) {
+        $.ajax({
+            url: '/Computer/ThueMay',
+            type: 'POST',
+            data: { IdMay: IdMay },
+            success: function (response) {
+                if (response.success) {
+                    // Hiển thị thông báo thuê máy thành công
+                    alert('Đã Thuê Máy Thành Công');
+                    // Reload page or update UI as needed
+                    location.reload();
+                } else {
+                    // Hiển thị thông báo lỗi nếu có
+                    alert('Failed to rent item: ' + response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Hiển thị thông báo lỗi nếu có
+                alert('Error: ' + error);
+            }
+        });
+    }
+};
+function confirmPay(IdMay) {
+    if (confirm("Bạn có muốn trả máy này không ?")) {
+        $.ajax({
+            url: '/Computer/TraMay',
+            type: 'POST',
+            data: { IdMay: IdMay },
+            success: function (response) {
+                if (response.success) {
+                    // Hiển thị thông báo thuê máy thành công
+                    alert('Đã Trả Máy Thành Công');
+                    // Reload page or update UI as needed
+                    location.reload();
+                } else {
+                    // Hiển thị thông báo lỗi nếu có
+                    alert('Failed to rent item: ' + response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Hiển thị thông báo lỗi nếu có
+                alert('Error: ' + error);
+            }
+        });
+    }
+};
+
+function confirmEdit(IdMay) {
+    $.ajax({
+        url: '/Computer/Edit',
+        type: 'POST',
+        data: { IdMay: IdMay },
+        success: function (response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                // Hiển thị thông báo lỗi nếu có
+                alert('Failed to rent item: ' + response.error);
+            }
+        },
+        error: function (xhr, status, error) {
+            // Hiển thị thông báo lỗi nếu có
+            alert('Error: ' + error);
+        }
+    });
+};
+$(document).ready(function () {
+    var defaultMaLoai = $('#maLoaiSelect').val();
+    // Gán giá trị mặc định vào button hoặc thực hiện các thao tác khác tùy ý
+    $('#addButton').data('maLoai', defaultMaLoai);
+
+    // Bắt sự kiện khi giá trị của select thay đổi
+    $('#maLoaiSelect').change(function () {
+        // Lấy giá trị MaLoai được chọn
+        var selectedMaLoai = $(this).val();
+        // Gán giá trị MaLoai vào button hoặc thực hiện các thao tác khác tùy ý
+        $('#addButton').data('maLoai', selectedMaLoai);
+    });
+
+    // Bắt sự kiện khi button được nhấp
+    $('#addButton').click(function () {
+        // Lấy giá trị MaLoai từ button
+        var maLoai = $(this).data('maLoai');
+        // Gọi hàm để thêm mục mới với MaLoai được chọn
+        addItem(maLoai);
     });
 });
+
+function addItem(MaLoai) {
+    $.ajax({
+        url: '/Computer/Add', 
+        type: 'POST',
+        data: { MaLoai: MaLoai },
+        success: function (response) {
+            if (response.success) {
+                // Hiển thị thông báo thành công
+                alert('Item added successfully.');
+                // Reload page or update UI as needed
+                location.reload();
+            } else {
+                // Hiển thị thông báo lỗi nếu có
+                alert('Không thể thêm máy vào: ' + response.error);
+            }
+        },
+        error: function (xhr, status, error) {
+            // Hiển thị thông báo lỗi nếu có
+            alert('Lõi: ' + error);
+        }
+    });
+}

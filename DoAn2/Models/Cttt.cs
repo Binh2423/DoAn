@@ -11,7 +11,7 @@ public partial class Cttt
 
     public decimal? SoGioDaSuDung { get; set; }
 
-    public DateTime? GioBatDau { get; set; }
+    public DateTime GioBatDau { get; set; }
 
     public DateTime? GioKetThuc { get; set; }
 

@@ -54,24 +54,18 @@
             }
 
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right ">
             @if (User.Identity.IsAuthenticated)
             {
                 string username = User.Identity.Name;
                 string permission = User.FindFirst(ClaimTypes.Role)?.Value;
-                if (permission == "1")
+                if (permission == "VT01")
                 {
                     <li><a href="quan-tri"><span class="glyphicon glyphicon-cog"></span></a></li>
                 }
                 else
                 {
-                    <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
+                    <li><a href="gio-hang"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
                 }
                 <li>
                     <a href="thong-tin">
@@ -83,18 +77,8 @@
             }
             else
             {
-                <li>
-                    <a href="dang-ky">
-                        <span class="glyphicon glyphicon-user"></span> Đăng
-                        ký
-                    </a>
-                </li>
-                <li>
-                    <a href="dang-nhap">
-                        <span class="glyphicon glyphicon-log-in"></span> Đăng
-                        nhập
-                    </a>
-                </li>
+                <li><a href="dang-ky"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="dang-nhap"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
             }
         </ul>
     </div>

@@ -54,13 +54,26 @@ namespace DoAn2.Controllers
             // Generate a unique file name to prevent collision
             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
 
+            // Check file extension to ensure it's an image file
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                throw new ArgumentException("Invalid file extension. Only JPG, JPEG, PNG, and GIF files are allowed.");
+            }
+
+            // Combine directory and file name to get the full save path
             var savePath = Path.Combine(directory, fileName);
+            // Copy the file to the save path
             using (var fileStream = new FileStream(savePath, FileMode.Create))
             {
                 await image.CopyToAsync(fileStream);
             }
-            return fileName; // Return the unique file name
+
+            // Return the relative URL of the saved image
+            return  fileName;
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(ThucPham tp, IFormFile HinhAnh)
         {
@@ -95,8 +108,6 @@ namespace DoAn2.Controllers
                 TP = tp,
             };
             return View(ViewModel);
-
-            
         }
 
 

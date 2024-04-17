@@ -1,9 +1,19 @@
-﻿@model DoAn2.ViewModels.FoodViewModel
+﻿@using System.Security.Claims
+@model DoAn2.ViewModels.FoodViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<a asp-action="Create"><button type="button" class="btn btn-success btn-lg" id="btnAdd"><i class="fa-solid fa-plus"></i> Thêm mới sản phẩm</button></a>
+@if (User.Identity.IsAuthenticated)
+{
+    string username = User.Identity.Name;
+    string permission = User.FindFirst(ClaimTypes.Role)?.Value;
+    if (permission == "VT01")
+    {
+        <a asp-action="Create"><button type="button" class="btn btn-success btn-lg" id="btnAdd"><i class="fa-solid fa-plus"></i> Thêm mới sản phẩm</button></a>
+    }
+}
+
 
 
 

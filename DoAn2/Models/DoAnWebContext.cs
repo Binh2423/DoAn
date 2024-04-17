@@ -63,7 +63,7 @@ public partial class DoAnWebContext : DbContext
 
         modelBuilder.Entity<Cttt>(entity =>
         {
-            entity.HasKey(e => new { e.IdMay, e.Sdt }).HasName("PK__CTTT__51B224535CABD87E");
+            entity.HasKey(e => new { e.IdMay, e.Sdt }).HasName("PK_CTTT_1");
 
             entity.ToTable("CTTT");
 
@@ -74,7 +74,7 @@ public partial class DoAnWebContext : DbContext
                 .HasColumnName("SDT");
             entity.Property(e => e.GioBatDau).HasColumnType("datetime");
             entity.Property(e => e.GioKetThuc).HasColumnType("datetime");
-            entity.Property(e => e.SoGioDaSuDung).HasColumnType("decimal(3, 0)");
+            entity.Property(e => e.SoGioDaSuDung).HasColumnType("decimal(5, 2)");
 
             entity.HasOne(d => d.IdMayNavigation).WithMany(p => p.Cttts)
                 .HasForeignKey(d => d.IdMay)

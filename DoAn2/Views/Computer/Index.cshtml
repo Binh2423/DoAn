@@ -1,8 +1,44 @@
-﻿
+﻿@using System.Security.Claims
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<!-- Button trigger modal -->
+@if (User.Identity.IsAuthenticated)
+{
+    string username = User.Identity.Name;
+    string permission = User.FindFirst(ClaimTypes.Role)?.Value;
+    if (permission == "VT01")
+    {
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Thêm máy mới
+        </button>
+    }
+}
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h2>Chọn lại máy cần thêm vào</h2>
+                <select id="maLoaiSelect" asp-items="ViewBag.LoaiMay" style="font-size: 25px;"> </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="addButton">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -10,5 +46,7 @@
         </div>
     </div>
 </section>
-
+@section scripts {
+    <script src="~/js/computer.js"></script>
+}
 
