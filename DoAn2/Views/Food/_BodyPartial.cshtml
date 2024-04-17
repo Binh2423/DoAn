@@ -13,7 +13,7 @@
                 <div class="text-center">
                     <!-- Product name-->
                     <h5 class="fw-bolder">@item.TenTp</h5>
-                    @item.GiaTp VND
+                    <span>@String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.GiaTp)</span>
                 </div>
             </div>
             <!-- Product actions-->

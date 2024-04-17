@@ -9,7 +9,7 @@ public partial class Cthd
 
     public int MaTp { get; set; }
 
-    public short? SoLuong { get; set; }
+    public int? SoLuong { get; set; }
 
     public virtual ThucPham MaTpNavigation { get; set; } = null!;
 

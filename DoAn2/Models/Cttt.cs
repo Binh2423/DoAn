@@ -5,7 +5,7 @@ namespace DoAn2.Models;
 
 public partial class Cttt
 {
-    public string IdMay { get; set; } = null!;
+    public int IdMay { get; set; }
 
     public string Sdt { get; set; } = null!;
 

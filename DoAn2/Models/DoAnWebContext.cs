@@ -67,9 +67,6 @@ public partial class DoAnWebContext : DbContext
 
             entity.ToTable("CTTT");
 
-            entity.Property(e => e.IdMay)
-                .HasMaxLength(10)
-                .IsUnicode(false);
             entity.Property(e => e.Sdt)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -131,9 +128,6 @@ public partial class DoAnWebContext : DbContext
 
             entity.ToTable("MayTinh");
 
-            entity.Property(e => e.IdMay)
-                .HasMaxLength(10)
-                .IsUnicode(false);
             entity.Property(e => e.HinhAnh).HasMaxLength(100);
             entity.Property(e => e.MaLoai)
                 .HasMaxLength(10)

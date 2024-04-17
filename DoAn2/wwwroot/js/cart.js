@@ -3,7 +3,6 @@
 var cart = {
     init: function () {
         cart.regEvents();
-
     },
     regEvents: function () {
         // Xử lý sự kiện khi số lượng sản phẩm thay đổi
@@ -79,14 +78,14 @@ var cart = {
         $('.txtQuantity').each(function () {
             var quantity = parseInt($(this).val());
             totalQuantity += quantity;
-            var priceString = $(this).closest('.row').find('.amount span').text().trim().replace(/\D/g, '');
-            var price = parseFloat(priceString.replace(/[^\d.-]/g, '')); 
+            //var priceString = $(this).closest('.row').find('.amount span').text().trim().replace(/\D/g, '');
+            var price = parseInt($(this).val());
             totalPrice += (quantity * price);
         });
 
         // Định dạng tổng giá trị dựa trên mã địa phương "vi-VN"
         var formattedPrice = totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-
+        console.log(formattedPrice);
         // Cập nhật nội dung của các phần tử HTML với tổng số lượng và tổng giá trị tính được
         $('#totalQuantity').text(totalQuantity);
         $('#totalPrice').text(formattedPrice);

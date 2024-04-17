@@ -40,7 +40,7 @@
                                                 
 
                                                 <input id="quantity_@item.thucpham.MaTp" min="1" name="quantity" value="@item.Quantity" type="number" disabled
-                                                       class="form-control form-control-sm txtQuantity" data-id="@item.thucpham.MaTp" onchange="updateTotalPrice(@item.thucpham.MaTp)" />
+                                                       class="form-control form-control-sm txtQuantity" data-id="@item.thucpham.MaTp" />
 
                                                 
                                                 <a class="btn btn-outline-dark mt-auto" href="/them-gio-hang?ProductId=@item.thucpham.MaTp&Quantity=1">
@@ -50,6 +50,7 @@
                                             <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                                 <td class="amount">
                                                     <span>@String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.thucpham.GiaTp)</span>
+                                                    <div data-price="@item.thucpham.GiaTp"></div>
                                                 </td>
                                                 <td class="amount">
                                                     <span>@String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.thucpham.GiaTp * item.Quantity)</span>
