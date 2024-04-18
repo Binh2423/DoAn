@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddControllersWithViews();
 
 var connectionString =
 builder.Configuration.GetConnectionString("DoAnWebConnection");
@@ -37,6 +38,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -49,29 +51,34 @@ app.UseSession();
 
 app.UseEndpoints(endpoints =>
 {
-    
 
-    _= endpoints.MapControllerRoute(
+
+    _ = endpoints.MapControllerRoute(
     name: "trang-chu",
     pattern: "trang-chu",
     defaults: new { controller = "Home", action = "Index" });
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
+ name: "quan-tri",
+ pattern: "quan-tri",
+ defaults: new { controller = "Admin", action = "Index" });
+
+    _ = endpoints.MapControllerRoute(
     name: "dang-ky",
     pattern: "dang-ky",
     defaults: new { controller = "User", action = "Register" });
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "dang-nhap",
     pattern: "dang-nhap",
     defaults: new { controller = "User", action = "Login" });
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "dang-xuat",
     pattern: "dang-xuat",
     defaults: new { controller = "User", action = "Logout" });
 
-    _=endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "gio-hang",
     pattern: "gio-hang",
     defaults: new { controller = "Cart", action = "Index" });
@@ -81,12 +88,12 @@ app.UseEndpoints(endpoints =>
     pattern: "them-gio-hang",
     defaults: new { controller = "Cart", action = "AddItem" });
 
-    _=endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "thanh-toan",
     pattern: "thanh-toan",
     defaults: new { controller = "Cart", action = "Payment" });
 
-    _=endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "hoan-thanh",
     pattern: "hoan-thanh",
     defaults: new { controller = "Cart", action = "Success" });
@@ -97,22 +104,22 @@ app.UseEndpoints(endpoints =>
     defaults: new { controller = "User", action = "Info" });
 
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "may-tinh",
     pattern: "may-tinh",
     defaults: new { controller = "Computer", action = "Index" });
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "do-an",
     pattern: "do-an",
     defaults: new { controller = "Food", action = "Index" });
 
-    _= endpoints.MapControllerRoute(
+    _ = endpoints.MapControllerRoute(
     name: "them-do-an",
     pattern: "them-do-an",
     defaults: new { controller = "Food", action = "Add" });
 
-  
+
 
 
     _ = endpoints.MapControllerRoute(
@@ -120,16 +127,17 @@ app.UseEndpoints(endpoints =>
     pattern: "{link}",
     defaults: new { controller = "Food", action = "CateFood" });
 
-    
 
 
-    _= endpoints.MapControllerRoute(
+
+    _ = endpoints.MapControllerRoute(
     name: "{link}",
     pattern: "{link}",
     defaults: new { controller = "Computer", action = "CateCom" });
 
 
-    _= endpoints.MapControllerRoute(
+
+    _ = endpoints.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 });

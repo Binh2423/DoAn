@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add</h2>
+<h2>Create</h2>
 
 <h4>ThucPham</h4>
 <hr />
@@ -14,12 +14,8 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input type="hidden" asp-for="TP.MaTp" class="form-control" />
-                <span asp-validation-for="TP.MaTp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="TP.MaLoai" class="control-label"></label>
-                <select asp-for="TP.MaLoai" class="form-control" asp-items="ViewBag.Loai"></select>
+                <select asp-for="TP.MaLoai" class ="form-control" asp-items="ViewBag.Loai"></select>
             </div>
             <div class="form-group">
                 <label asp-for="TP.TenTp" class="control-label"></label>
@@ -28,12 +24,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="TP.GiaTp" class="control-label"></label>
-                <input asp-for="TP.GiaTp" class="form-control" min="0" />
+                <input asp-for="TP.GiaTp" class="form-control" />
                 <span asp-validation-for="TP.GiaTp" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TP.SoLuong" class="control-label"></label>
-                <input asp-for="TP.SoLuong" class="form-control" min="0" />
+                <input asp-for="TP.SoLuong" class="form-control" />
                 <span asp-validation-for="TP.SoLuong" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -41,6 +37,7 @@
                 <input type="file" asp-for="TP.HinhAnh" class="form-control" />
                 <span asp-validation-for="TP.HinhAnh" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -51,3 +48,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+

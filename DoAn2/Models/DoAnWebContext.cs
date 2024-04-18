@@ -210,9 +210,7 @@ public partial class DoAnWebContext : DbContext
 
             entity.ToTable("ThucPham");
 
-            entity.Property(e => e.MaTp)
-                .ValueGeneratedNever()
-                .HasColumnName("MaTP");
+            entity.Property(e => e.MaTp).HasColumnName("MaTP");
             entity.Property(e => e.GiaTp).HasColumnName("GiaTP");
             entity.Property(e => e.HinhAnh)
                 .HasMaxLength(100)

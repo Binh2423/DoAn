@@ -27,13 +27,14 @@
                             string permission = User.FindFirst(ClaimTypes.Role)?.Value;
                             if (permission == "VT01")
                             {
-                                <div class="text-center">
-                                    <a class="btn btn-outline-dark mt-auto" onclick="confirmDelete('@item.IdMay')">
-                                        <i class="fa-solid fa-trash"></i>Delete
-                                    </a>
-                                </div>
-                                @if (item.TrangThai == true)
+
+                                @if (item.TrangThai == false)
                                 {
+                                        <div class="text-center">
+                                            <a class="btn btn-outline-dark mt-auto" onclick="confirmDelete('@item.IdMay')">
+                                                <i class="fa-solid fa-trash"></i>Delete
+                                            </a>
+                                        </div>
                                     @if (item.BiHong == false)
                                     {
                                         <a class="btn btn-outline-dark mt-auto" onclick="confirmEdit('@item.IdMay')">

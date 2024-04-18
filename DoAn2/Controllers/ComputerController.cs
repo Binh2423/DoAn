@@ -25,14 +25,14 @@ namespace DoAn2.Controllers
             var maytinhs = await _context.MayTinhs.Where(m => m.Hide == false).OrderBy(m => m.Order).ToListAsync();
             var menus = await _context.Menus.Where(m => m.Hide == false).ToListAsync();
             var Loai = await _context.Loais.Where(m => m.MaLoai.StartsWith("MT")).ToListAsync();
-            ViewBag.LoaiMay = new SelectList(Loai, "MaLoai", "TenLoai","MT10");
+            ViewBag.LoaiMay = new SelectList(Loai, "MaLoai", "TenLoai", "MT10");
             var ViewModel = new ComputerViewModel
             {
                 MayTinhs = maytinhs,
                 Menus = menus
             };
             return View(ViewModel);
-            
+
         }
         public async Task<IActionResult> _BodyPartial()
         {
@@ -81,17 +81,18 @@ namespace DoAn2.Controllers
                     string username = User.Identity.Name;
                     if (username != null) users = await _context.TaiKhoans.FirstOrDefaultAsync(m => m.Sdt == username);
                 }
+               
+                    var order = new Cttt
+                    {
+                        IdMay = mayTinh.IdMay,
+                        GioBatDau = DateTime.Now, // Thời gian bắt đầu thuê là thời gian hiện tại
+                        Sdt = users.Sdt
+                    };
 
-                var order = new Cttt
-                {
-                    IdMay = mayTinh.IdMay,
-                    GioBatDau = DateTime.Now, // Thời gian bắt đầu thuê là thời gian hiện tại
-                    Sdt = users.Sdt
-                };
-              
-                _context.Cttts.Add(order);
-                await _context.SaveChangesAsync();
-                return Json(new { success = true });
+                    _context.Cttts.Add(order);
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true });
+               
             }
             catch (Exception ex)
             {
@@ -163,11 +164,11 @@ namespace DoAn2.Controllers
                 double timedeff;
                 if (span.Minutes <= 59)
                 {
-                     timedeff = (double)span.Minutes / 60;
+                    timedeff = (double)span.Minutes / 60;
                     order.SoGioDaSuDung = (decimal)Math.Round(timedeff, 2);
                 }
-                    
-                timedeff = (double)span.Hours + (double)span.Minutes/60;
+
+                timedeff = (double)span.Hours + (double)span.Minutes / 60;
                 order.SoGioDaSuDung = (decimal?)timedeff;
                 order.ThanhTien = (int?)(order.SoGioDaSuDung * mayTinh.Gia);
                 users.SoTienTrongTk -= order.ThanhTien;
@@ -194,17 +195,17 @@ namespace DoAn2.Controllers
                     return Json(new { success = false, error = "Mã Loại không xác định" });
 
                 var maytinh = new MayTinh();
-              
+
                 maytinh.MaLoai = MaLoai;
                 if (computers.Count == 0)
                 {
-                   
+
                     maytinh.Order = 1;
                     maytinh.TenMay = "Máy tính " + 1;
                 }
                 else
                 {
-                  
+
                     maytinh.Order = computers.Count + 1;
                     maytinh.TenMay = "Máy tính " + maytinh.Order;
                 }

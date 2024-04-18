@@ -1,0 +1,85 @@
+﻿@using System.Security.Claims
+@model DoAn2.ViewModels.AdminViewModel
+<div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="#!">Cyber Main </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            @foreach (var item in Model.Menus)
+            {
+                @if (item.IdMenu.Equals("MM02"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="@item.Link" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Máy Tính
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="@item.Link">Tất Cả</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @foreach (var item2 in Model.Menus)
+                            {
+                                @if (item2.IdMenu.Substring(0, 3).Equals("SMC"))
+                                {
+                                    <li><a class="dropdown-item" href="@item2.Link">@item2.Title</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+
+                }
+                if (item.IdMenu.Equals("MM03"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="@item.Link" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Đồ Ăn
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="@item.Link">Tất Cả</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            @foreach (var item2 in Model.Menus)
+                            {
+                                @if (item2.IdMenu.Substring(0, 3).Equals("SMF"))
+                                {
+                                    <li><a class="dropdown-item" href="@item2.Link">@item2.Title</a></li>
+                                }
+                            }
+                        </ul>
+                    </li>
+                }
+                @if (item.IdMenu.Equals("MM01") || item.IdMenu.Equals("MM04"))
+                {
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="@item.Link">@item.Title</a></li>
+                }
+
+            }
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right ">
+            @if (User.Identity.IsAuthenticated)
+            {
+                string username = User.Identity.Name;
+                string permission = User.FindFirst(ClaimTypes.Role)?.Value;
+                if (permission == "VT01")
+                {
+                    <li><a href="quan-tri"><span class="glyphicon glyphicon-cog"></span></a></li>
+                }
+                else
+                {
+                    <li><a href="gio-hang"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+                }
+                <li>
+                    <a href="thong-tin">
+                        <span class="glyphicon glyphicon-user"></span>
+                        @username
+                    </a>
+                </li>
+                <li><a href="dang-xuat"><span class="glyphicon glyphicon-log-out"></span></a></li>
+            }
+            else
+            {
+                <li><a href="dang-ky"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="dang-nhap"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            }
+        </ul>
+    </div>
+</div>
